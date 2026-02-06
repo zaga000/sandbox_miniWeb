@@ -88,7 +88,7 @@ resource "aws_route" "private_rt_route" {
 resource "aws_route_table_association" "private_rt_assoc" {
   count          = length(var.private_subnet_cidr)
   subnet_id      = aws_subnet.private_subnet_[count.index].id
-  route_table_id = aws_route_table.public_rt.id
+  route_table_id = aws_route_table.private_rt.id
 }
 
 # Security Group
