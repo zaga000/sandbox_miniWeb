@@ -5,22 +5,49 @@ resource "aws_launch_template" "web_launch_template" {
   key_name               = "aws-key"
   vpc_security_group_ids = [var.web_sg_id]
 
+  lifecycle {
+    create_before_destroy = true
+  }
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = {
+      Name      = "${var.project_name}-web-server"
+      Version   = "v2.0"
+      Project   = var.project_name
+      ManagedBy = "Terraform"
+    }
+  }
 }
 
 resource "aws_autoscaling_group" "web_asg" {
-  name             = "${var.project_name}-web-asg"
+  name                = "${var.project_name}-web-asg"
+  vpc_zone_identifier = var.private_subnet_ids
+  health_check_type   = "ELB"
+
   max_size         = 2
   min_size         = 1
   desired_capacity = 1
+
+
   launch_template {
     id      = aws_launch_template.web_launch_template.id
     version = "$Latest"
   }
-  vpc_zone_identifier = var.private_subnet_ids
+  instance_maintenance_policy {
+    min_healthy_percentage = 100
+    max_healthy_percentage = 200
+  }
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 100
+      instance_warmup        = 180
+    }
+  }
   lifecycle {
     ignore_changes = [target_group_arns]
   }
-  health_check_type = "ELB"
 }
 
 resource "aws_autoscaling_attachment" "web_asg_attachment" {
