@@ -2,7 +2,7 @@ variable "project_name" {
   type = string
 }
 
-variable "web_sg_id" {
+variable "alb_sg_id" {
   type = string
 }
 

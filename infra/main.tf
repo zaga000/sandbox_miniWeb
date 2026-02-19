@@ -31,7 +31,7 @@ module "compute" {
 module "lb" {
   source           = "./modules/alb"
   project_name     = var.project_name
-  web_sg_id        = module.security_group.web_sg_id
+  alb_sg_id        = module.security_group.alb_sg_id
   public_subnet_id = module.vpc.public_subnet_id
   vpc_id           = module.vpc.vpc_id
 }
