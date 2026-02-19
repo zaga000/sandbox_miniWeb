@@ -3,8 +3,8 @@ yum update -y
 yum install -y python3 git python3-pip
 
 cd /home/ec2-user
-git clone https://github.com/zaga000/sandbox_miniWeb.git
-cd your-repo-name
+git clone -b feature/setup-terraform https://github.com/zaga000/sandbox_miniWeb.git
+cd sandbox_miniWeb/app
 
 pip3 install -r requirements.txt
 

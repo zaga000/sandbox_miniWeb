@@ -4,8 +4,9 @@ resource "aws_launch_template" "web_launch_template" {
   instance_type          = "t3.micro"
   key_name               = "aws-key"
   vpc_security_group_ids = [var.web_sg_id]
+  update_default_version = true
 
-  user_data = var.user_data
+  user_data = base64encode(var.user_data)
 
   lifecycle {
     create_before_destroy = true
@@ -34,7 +35,7 @@ resource "aws_autoscaling_group" "web_asg" {
 
   launch_template {
     id      = aws_launch_template.web_launch_template.id
-    version = "$Latest"
+    version = aws_launch_template.web_launch_template.latest_version
   }
   instance_maintenance_policy {
     min_healthy_percentage = 100
