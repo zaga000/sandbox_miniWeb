@@ -5,6 +5,8 @@ resource "aws_launch_template" "web_launch_template" {
   key_name               = "aws-key"
   vpc_security_group_ids = [var.web_sg_id]
 
+  user_data = var.user_data
+
   lifecycle {
     create_before_destroy = true
   }

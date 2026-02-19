@@ -11,17 +11,14 @@ variable "vpc_cidr" {
 }
 
 variable "db_password" {
-  description = "Пароль для бази даних RDS"
   type        = string
   sensitive   = true
 }
 
 variable "db_username" {
-  description = "Логін адміністратора бази даних"
   type        = string
 }
 
 variable "db_name" {
-  description = "Назва бази даних"
   type        = string
 }

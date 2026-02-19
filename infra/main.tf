@@ -20,6 +20,12 @@ module "compute" {
   web_tg_arn         = module.lb.web_tg_arn
   rds_endpoint       = module.rds.rds_endpoint
   eic_sg_id          = module.security_group.eic_sg_id
+  user_data = templatefile("${path.module}/userdata.sh", {
+    rds_endpoint = module.rds.rds_endpoint
+    db_user      = var.db_username
+    db_password  = var.db_password
+    db_name      = var.db_name
+  })
 }
 
 module "lb" {

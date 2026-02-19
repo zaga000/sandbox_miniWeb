@@ -29,3 +29,7 @@ variable "rds_endpoint" {
 variable "eic_sg_id" {
   type = string
 }
+
+variable "user_data" {
+  type = string
+}
