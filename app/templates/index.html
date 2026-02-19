@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quote App</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 100px; background: #f4f4f4; }
+        .card { background: white; padding: 20px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .sha { color: #888; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <p class="sha">Version: {{ sha }}</p>
+        <hr>
+        <p style="font-style: italic; font-size: 1.2em;">"{{ quote }}"</p>
+        <p><strong>— {{ author }}</strong></p>
+    </div>
+</body>
+</html>
