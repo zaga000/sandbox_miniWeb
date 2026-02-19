@@ -21,3 +21,11 @@ variable "private_subnet_ids" {
 variable "web_tg_arn" {
   type = string
 }
+
+variable "rds_endpoint" {
+  type = string
+}
+
+variable "eic_sg_id" {
+  type = string
+}

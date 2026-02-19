@@ -54,3 +54,8 @@ resource "aws_autoscaling_attachment" "web_asg_attachment" {
   autoscaling_group_name = aws_autoscaling_group.web_asg.name
   lb_target_group_arn    = var.web_tg_arn
 }
+
+resource "aws_ec2_instance_connect_endpoint" "ssh_endpoint" {
+  subnet_id          = var.private_subnet_ids[0]
+  security_group_ids = [var.eic_sg_id]
+}

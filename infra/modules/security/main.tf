@@ -17,9 +17,15 @@ resource "aws_vpc_security_group_ingress_rule" "alb_https" {
   description       = "Allow HTTPs traffic from within the VPC"
 }
 
+resource "aws_vpc_security_group_egress_rule" "alb_egress" {
+  security_group_id = aws_security_group.alb_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
+}
+
 resource "aws_security_group" "web_sg" {
   name        = "${var.project_name}-web-sg"
-  description = "Security group for ALB"
+  description = "Security group for web instances"
   vpc_id      = var.vpc_id
 
   tags = {
@@ -34,6 +40,15 @@ resource "aws_vpc_security_group_ingress_rule" "web_from_alb" {
   to_port                      = 80
   ip_protocol                  = "tcp"
   description                  = "Allow HTTP traffic from ALB"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "web_from_ssh" {
+  security_group_id            = aws_security_group.web_sg.id
+  referenced_security_group_id = aws_security_group.eic_sg.id
+  from_port                    = 22
+  to_port                      = 22
+  ip_protocol                  = "tcp"
+  description                  = "Allow SSH traffic"
 }
 
 resource "aws_vpc_security_group_egress_rule" "web_egress" {
@@ -52,7 +67,7 @@ resource "aws_security_group" "rds_sg" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "rds_ingress" {
-  security_group_id            = aws_security_group.web_sg.id
+  security_group_id            = aws_security_group.rds_sg.id
   referenced_security_group_id = aws_security_group.web_sg.id
   from_port                    = 3306
   to_port                      = 3306
@@ -60,3 +75,15 @@ resource "aws_vpc_security_group_ingress_rule" "rds_ingress" {
   description                  = "Allow traffic only from App instance"
 }
 
+resource "aws_security_group" "eic_sg" {
+  name   = "${var.project_name}-eic-endpoint-sg"
+  vpc_id = var.vpc_id
+}
+
+resource "aws_vpc_security_group_egress_rule" "eic_egress" {
+  security_group_id = aws_security_group.eic_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 22
+  to_port           = 22
+  ip_protocol       = "tcp"
+}

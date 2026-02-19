@@ -18,6 +18,8 @@ module "compute" {
   web_sg_id          = module.security_group.web_sg_id
   private_subnet_ids = module.vpc.private_subnet_id
   web_tg_arn         = module.lb.web_tg_arn
+  rds_endpoint       = module.rds.rds_endpoint
+  eic_sg_id          = module.security_group.eic_sg_id
 }
 
 module "lb" {
@@ -26,4 +28,14 @@ module "lb" {
   web_sg_id        = module.security_group.web_sg_id
   public_subnet_id = module.vpc.public_subnet_id
   vpc_id           = module.vpc.vpc_id
+}
+
+module "rds" {
+  source             = "./modules/rds"
+  project_name       = var.project_name
+  rds_sg_id          = module.security_group.rds_sg_id
+  private_subnet_ids = module.vpc.private_subnet_id
+  db_password        = var.db_password
+  db_username        = var.db_username
+  db_name            = var.db_name
 }
