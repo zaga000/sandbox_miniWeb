@@ -22,3 +22,7 @@ variable "db_username" {
 variable "db_name" {
   type        = string
 }
+
+variable "domain_name" {
+  type = string
+}

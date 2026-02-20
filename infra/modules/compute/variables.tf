@@ -33,3 +33,7 @@ variable "eic_sg_id" {
 variable "user_data" {
   type = string
 }
+
+variable "instance_type" {
+  
+}
