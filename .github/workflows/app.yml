@@ -29,11 +29,11 @@ jobs:
       - name: Get Dynamic Bucket Name
         id: find_bucket
         run: |
-          BUCKET_NAME=${aws resourcegroupstaggingapi get-resources \
+          BUCKET_NAME=$(aws resourcegroupstaggingapi get-resources \
             --tag-filters Key=Project,Values=myproject Key=Environment,Values=dev Key=Type,Values=ArtifactStorage \
-            --resource-type-filters s3:bucket \
+            --resource-type-filters s3 \
             --query 'ResourceTagMappingList[0].ResourceARN' \
-            --output text | cud -d f6)}
+            --output text | cut -d: -f6)
 
             if [ -z "$BUCKET_NAME" ] || [ "BUCKET_NAME" == "None"]; then
               echo "Error: Bucket with specified tags not found."
