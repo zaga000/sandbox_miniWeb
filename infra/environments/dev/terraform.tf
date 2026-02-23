@@ -10,10 +10,10 @@ terraform {
 
   backend "s3" {
     bucket = "gload-terraform-state-bucket-463"
-    key = "dev/s3/terraform.tfstate"
+    key    = "dev/s3/terraform.tfstate"
     region = "eu-central-1"
 
     dynamodb_table = "gload-terraform-locks"
-    encrypt = true
+    encrypt        = true
   }
 }

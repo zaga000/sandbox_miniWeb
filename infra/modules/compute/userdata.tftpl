@@ -1,0 +1,26 @@
+#!/bin/bash
+
+exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+
+echo "Starting deployment from S3..."
+
+yum update -y
+yum install -y python3 pip unzip aws-cli
+
+mkdir -p /app
+cd /app
+aws s3 cp s3://${bucket_name}/app.zip .
+
+unzip -o app.zip
+pip3 install -r requirements.txt
+
+export DB_HOST="${rds_endpoint}"
+export DB_USER="${db_user}"
+export DB_PASSWORD="${db_password}"
+export DB_NAME="${db_name}"
+
+export GIT_SHA=$(git rev-parse --short HEAD)
+
+nohup python3 main.py > /home/ec2-user/app.log 2>&1 &
+
+echo "Deployment finished!"

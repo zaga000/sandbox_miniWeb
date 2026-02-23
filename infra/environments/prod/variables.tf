@@ -1,5 +1,5 @@
 variable "REGION" {
-  default = "eu-central-1"
+  default = "eu-west-1"
 }
 
 variable "project_name" {
@@ -11,18 +11,22 @@ variable "vpc_cidr" {
 }
 
 variable "db_password" {
-  type        = string
-  sensitive   = true
+  type      = string
+  sensitive = true
 }
 
 variable "db_username" {
-  type        = string
+  type = string
 }
 
 variable "db_name" {
-  type        = string
+  type = string
 }
 
 variable "domain_name" {
+  type = string
+}
+
+variable "environment" {
   type = string
 }

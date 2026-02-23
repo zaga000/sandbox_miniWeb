@@ -16,7 +16,7 @@ resource "aws_vpc_security_group_ingress_rule" "alb_https" {
   to_port           = 443
   description       = "Allow HTTPs traffic from within the VPC"
 }
- 
+
 
 resource "aws_vpc_security_group_egress_rule" "alb_egress" {
   security_group_id = aws_security_group.alb_sg.id

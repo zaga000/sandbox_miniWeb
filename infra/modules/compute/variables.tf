@@ -30,10 +30,26 @@ variable "eic_sg_id" {
   type = string
 }
 
-variable "user_data" {
+variable "instance_type" {
   type = string
 }
 
-variable "instance_type" {
-  
+variable "iam_instance_profile_name" {
+  type = string
+}
+
+variable "artifact_bucket_name" {
+  type = string
+}
+
+variable "db_username" {
+  type = string
+}
+
+variable "db_password" {
+  type = string
+}
+
+variable "db_name" {
+  type = string
 }

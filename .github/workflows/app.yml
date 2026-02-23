@@ -1,0 +1,54 @@
+name: App Deployment
+
+on:
+  push:
+    paths:
+      - 'app/**'
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+
+      - name: Pack Apllication
+        run: |
+          cd app
+          zip -r ../app.zip .
+
+      - name: Get Dynamic Bucket Name
+        id: find_bucket
+        run: |
+          BUCKET_NAME=${aws resourcegroupstaggingapi get-resources \
+            --tag-filters Key=Project,Values=myproject Key=Environment,Values=dev Key=Type,Values=ArtifactStorage \
+            --resource-type-filters s3:bucket \
+            --query 'ResourceTagMappingList[0].ResourceARN' \
+            --output text | cud -d f6)}
+
+            if [ -z "$BUCKET_NAME" ] || [ "BUCKET_NAME" == "None"]; then
+              echo "Error: Bucket with specified tags not found."
+              exit 1
+            fi
+          
+            echo "Found bucket: $BUCKET_NAME"
+            echo "bucket_name=$BUCKET_NAME" >> $GITHUB_OUTPUT
+
+      - name: Upload to S3
+        run: |
+          aws s3 cp app.zip s3://${{ steps.find_bucket.outputs.bucke_name }}/app.zip
+
+      - name: Refresh ASG Instances
+        run: |
+          aws autoscaling start-instance-refresh \
+            --auto-scaling-group-name ${{ secrets.ASG_NAME }} \
+            --preferences '{"MinHealthyPercentage": 100, "InstanceWarmup": 300}'

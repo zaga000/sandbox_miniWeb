@@ -5,8 +5,17 @@ resource "aws_launch_template" "web_launch_template" {
   key_name               = "aws-key"
   vpc_security_group_ids = [var.web_sg_id]
   update_default_version = true
+  iam_instance_profile {
+    name = var.iam_instance_profile_name
+  }
 
-  user_data = base64encode(var.user_data)
+  user_data = base64encode(templatefile("${path.module}/userdata.tftpl", {
+    bucket_name  = var.artifact_bucket_name
+    rds_endpoint = var.rds_endpoint
+    db_user      = var.db_username
+    db_password  = var.db_password
+    db_name      = var.db_name
+  }))
 
   lifecycle {
     create_before_destroy = true
