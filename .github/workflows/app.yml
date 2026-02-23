@@ -4,8 +4,9 @@ on:
   push:
     paths:
       - 'app/**'
-    branches:
-      - feature/setup-terraform
+    #branches:
+    #  - feature/setup-terraform
+    workflow_dispatch:
 
 jobs:
   deploy:
