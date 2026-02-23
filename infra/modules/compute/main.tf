@@ -60,6 +60,17 @@ resource "aws_autoscaling_group" "web_asg" {
   lifecycle {
     ignore_changes = [target_group_arns]
   }
+  tag {
+    key                 = "Project"
+    value               = var.project_name
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Environment"
+    value               = var.environment
+    propagate_at_launch = true
+  }
 }
 
 resource "aws_autoscaling_attachment" "web_asg_attachment" {

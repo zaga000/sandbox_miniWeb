@@ -26,6 +26,7 @@ module "compute" {
   db_username               = var.db_username
   db_password               = var.db_password
   db_name                   = var.db_name
+  environment               = var.environment
 }
 
 module "lb" {
