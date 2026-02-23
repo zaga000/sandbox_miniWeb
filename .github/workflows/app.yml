@@ -2,11 +2,9 @@ name: App Deployment
 
 on:
   push:
-    paths:
-      - 'app/**'
-    #branches:
-    #  - feature/setup-terraform
-    workflow_dispatch:
+    branches:
+      - feature/setup-terraform
+  workflow_dispatch:
 
 jobs:
   deploy:

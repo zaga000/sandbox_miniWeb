@@ -2,11 +2,9 @@ name: Terraform Deployment
 
 on:
   push:
-    paths:
-      - 'infra/**' 
-    #branches:
-    #  - feature/setup-terraform
-    workflow_dispatch:
+    branches:
+      - feature/setup-terraform
+  workflow_dispatch:
 
 jobs:
   terraform:
