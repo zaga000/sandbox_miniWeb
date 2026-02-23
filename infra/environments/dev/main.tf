@@ -66,4 +66,3 @@ module "iam" {
   environment   = var.environment
   s3_bucket_arn = module.s3.bucket_arn
 }
-
