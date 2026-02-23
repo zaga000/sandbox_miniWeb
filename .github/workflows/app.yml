@@ -44,7 +44,7 @@ jobs:
 
       - name: Upload to S3
         run: |
-          aws s3 cp app.zip s3://${{ steps.find_bucket.outputs.bucke_name }}/app.zip
+          aws s3 cp app.zip s3://${{ steps.find_bucket.outputs.bucket_name }}/app.zip
 
       - name: Refresh ASG Instances
         run: |
