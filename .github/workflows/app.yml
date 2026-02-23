@@ -46,8 +46,23 @@ jobs:
         run: |
           aws s3 cp app.zip s3://${{ steps.find_bucket.outputs.bucket_name }}/app.zip
 
-      - name: Refresh ASG Instances
+      - name: Find ASG Name
+        id: find_asg
+        run: |
+          ASG_NAME=$(aws autoscaling describe-auto-scaling-groups \
+            --query "AutoScalingGroups[?contains(Tags[?Key=='Project'].Value, 'myproject') && contains(Tags[?Key=='Environment'].Value, 'dev')].AutoScalingGroupName" \
+            --output text)
+
+          if [ -z "$ASG_NAME" ] || [ "$ASG_NAME" == "None" ]; then
+            echo "Error: ASG not found!"
+            exit 1
+          fi
+
+          echo "Found ASG: $ASG_NAME"
+          echo "asg_name=$ASG_NAME" >> $GITHUB_OUTPUT
+
+      - name: Start Instance Refresh
         run: |
           aws autoscaling start-instance-refresh \
-            --auto-scaling-group-name ${{ secrets.ASG_NAME }} \
+            --auto-scaling-group-name ${{ steps.find_asg.outputs.asg_name }} \
             --preferences '{"MinHealthyPercentage": 100, "InstanceWarmup": 300}'
