@@ -6,6 +6,7 @@ on:
       - 'infra/**' 
     branches:
       - feature/setup-terraform
+    workflow_dispatch:
 
 jobs:
   terraform:
@@ -31,7 +32,7 @@ jobs:
           aws-region: eu-central-1
       
       - name: Terraform Init
-        run: terraform Init
+        run: terraform init
       
       - name: Terraform Plan
         run: terraform plan -out=tfplan
