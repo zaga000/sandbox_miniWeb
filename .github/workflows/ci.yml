@@ -69,7 +69,7 @@ jobs:
         id: find_bucket
         run: |
           echo "Searching for bucket for ${{ env.TARGET_ENV }}..."
-          for i in {1..6}; do
+          for i in {1..21}; do
             BUCKET_NAME=$(aws resourcegroupstaggingapi get-resources \
               --tag-filters Key=Project,Values=myproject Key=Environment,Values=dev Key=Type,Values=ArtifactStorage \
               --resource-type-filters s3 \
@@ -84,7 +84,7 @@ jobs:
             echo "Waiting for AWS to index tags... (Attempt $i/6)"
             sleep 20
           done
-          echo "Error: Bucket not found after 2 minutes."
+          echo "Error: Bucket not found after 7 minutes."
           exit 1
 
       - name: Upload to S3
