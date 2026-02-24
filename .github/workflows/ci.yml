@@ -76,12 +76,12 @@ jobs:
               --query 'ResourceTagMappingList[0].ResourceARN' \
               --output text | cut -d: -f6)
 
-            if [ -z "$BUCKET_NAME" ] || [ "BUCKET_NAME" != "None"]; then
-              cho "Found bucket: $BUCKET_NAME"
+            if [ -z "$BUCKET_NAME" ] && [ "$BUCKET_NAME" != "None" ]; then
+              echo "Found bucket: $BUCKET_NAME"
               echo "bucket_name=$BUCKET_NAME" >> $GITHUB_OUTPUT
               exit 0
             fi
-            echo "Waiting for AWS to index tags... (Attempt $i/6)"
+            echo "Waiting for AWS to index tags... (Attempt $i/21)"
             sleep 20
           done
           echo "Error: Bucket not found after 7 minutes."
