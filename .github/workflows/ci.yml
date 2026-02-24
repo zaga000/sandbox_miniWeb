@@ -76,7 +76,7 @@ jobs:
               --query 'ResourceTagMappingList[0].ResourceARN' \
               --output text | cut -d: -f6)
 
-            if [ -z "$BUCKET_NAME" ] && [ "$BUCKET_NAME" != "None" ]; then
+            if [ -n "$BUCKET_NAME" ] && [ "$BUCKET_NAME" != "None" ]; then
               echo "Found bucket: $BUCKET_NAME"
               echo "bucket_name=$BUCKET_NAME" >> $GITHUB_OUTPUT
               exit 0
